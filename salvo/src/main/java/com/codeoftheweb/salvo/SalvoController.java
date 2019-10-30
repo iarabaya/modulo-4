@@ -1,12 +1,13 @@
 package com.codeoftheweb.salvo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.management.ObjectName;
 import java.util.*;
@@ -32,8 +33,22 @@ public class SalvoController {
     @Autowired
     private ScoreRepository scoreRepository;
 
-    @RequestMapping("/players")
-     public List<Object> getPlayers(){ return playerRepository.findAll().stream().collect(toList());
+    @RequestMapping(path = "/players", method = RequestMethod.POST)
+     public ResponseEntity<String> createPlayer(@RequestParam String name,@RequestParam String password) {
+
+        if(name.isEmpty()){
+            return new ResponseEntity<String>("No name given",HttpStatus.FORBIDDEN);
+        }
+
+        Player player = playerRepository.findByUserName(name);
+
+        if(name != null){ //todo esta bien
+            playerRepository.save(new Player(name, password));
+            return new ResponseEntity<String>("Player created", HttpStatus.CREATED);
+        }else{
+            return new ResponseEntity<String>("The user already exists",HttpStatus.CONFLICT);
+        }
+
     }
 
     @RequestMapping("/games")
@@ -55,7 +70,6 @@ public class SalvoController {
     }
 
 
-
     @RequestMapping("/game_view/{gamePlayerId}")
     public Map<String,Object> getGameView(@PathVariable Long gamePlayerId){
         return gameViewDTO(gamePlayerRepository.getOne(gamePlayerId));
@@ -65,6 +79,8 @@ public class SalvoController {
     public List<Map<String,Object>> getLeaderBoard(){
         return playerRepository.findAll().stream().map(Player::makeLeaderBoardDTO).collect(toList());
     }
+
+    //DTO GAMEVIEW
 
     public Map<String,Object> gameViewDTO(GamePlayer gamePlayer){
         Map<String,Object> dto = new LinkedHashMap<>();
@@ -76,14 +92,13 @@ public class SalvoController {
         return dto;
     }
 
-
+    //SHIP and SALVO LISTS
     public List <Map<String,Object>> getShipList(Set<Ship> ships){
         return ships.stream().map(Ship::makeShipDTO).collect(Collectors.toList());
     }
     public List<Map<String,Object>> getSalvoList(Set<Salvo> salvoes){
         return salvoes.stream().map(Salvo::makeSalvoDTO).collect(Collectors.toList());
     }
-
 
 }
 

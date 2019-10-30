@@ -53,11 +53,6 @@ public class Game {
   @JsonIgnore
   public Ship getShip() { return ship;}
 
-  /*public void addGamePlayer(GamePlayer gamePlayer){
-    gamePlayer.setGame(this);
-    gamePlayers.add(gamePlayer);
-  }*/
-
   @JsonIgnore
   public List<Player> getPlayers(){
       return gamePlayers.stream()

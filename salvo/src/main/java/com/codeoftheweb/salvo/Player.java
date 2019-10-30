@@ -62,12 +62,6 @@ public class Player {
     return scores;
   }
 
-
- /* public void addGamePlayer(GamePlayer gamePlayer){
-    gamePlayer.setPlayer(this);
-    gamePlayers.add(gamePlayer);
-  }*/
-
  @JsonIgnore
   public List<Game> getGames(){
     return gamePlayers.stream()
@@ -80,7 +74,7 @@ public class Player {
     public Map<String, Object> makePlayerDTO() {
         Map<String, Object> dto = new LinkedHashMap<String, Object>();
         dto.put("id", this.getId());
-        dto.put("email", this.getUserName());
+        dto.put("name", this.getUserName());
         return dto;
   }
 

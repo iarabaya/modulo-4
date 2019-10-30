@@ -44,11 +44,11 @@ public class SalvoApplication extends SpringBootServletInitializer {
 
 	@Bean
 	public CommandLineRunner initData(PlayerRepository playerRepository,
-																		GameRepository gameRepository,
-																		GamePlayerRepository gamePlayerRepository,
-																		ShipRepository shipRepository,
-																		SalvoRepository salvoRepository,
-																		ScoreRepository scoreRepository ){
+									  GameRepository gameRepository,
+									  GamePlayerRepository gamePlayerRepository,
+									  ShipRepository shipRepository,
+									  SalvoRepository salvoRepository,
+									  ScoreRepository scoreRepository ){
 		return (args) -> {
 			Player player1 = new Player("j.bauer@ctu.gov.ar",passwordEncoder().encode("24"));
 			Player player2 = new Player("c.obrian@ctu.gov",passwordEncoder().encode("42"));
@@ -173,7 +173,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 			.antMatchers("/api/login").permitAll()
-			.antMatchers("/web/games.html","/web/js/*","/web/css/*", "/api/games").permitAll()
+			.antMatchers("/web/games.html","/web/**","/web/css/*", "/api/games").permitAll()
 			.antMatchers("/web/game.html*","/api/**").hasAuthority("USER")
 			.anyRequest().denyAll();
 

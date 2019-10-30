@@ -8,11 +8,11 @@ function getParameterByName(name) {
 };
 
 function loadData(){
-    $.get('/api/game_view/'+getParameterByName('gamePlayerId'))
+    $.get('/api/game_view/'+getParameterByName('gp'))
         .done(function(data) {
             console.log(data);
             var playerInfo;
-            if(data.gamePlayers[0].id == getParameterByName('gamePlayerId'))
+            if(data.gamePlayers[0].id == getParameterByName('gp'))
                 playerInfo = [data.gamePlayers[0].player.email,data.gamePlayers[1].player.email];
             else
                 playerInfo = [data.gamePlayers[1].player.email,data.gamePlayers[0].player.email];
