@@ -50,10 +50,10 @@ public class SalvoApplication extends SpringBootServletInitializer {
 									  SalvoRepository salvoRepository,
 									  ScoreRepository scoreRepository ){
 		return (args) -> {
-			Player player1 = new Player("j.bauer@ctu.gov.ar",passwordEncoder().encode("24"));
-			Player player2 = new Player("c.obrian@ctu.gov",passwordEncoder().encode("42"));
-			Player player3 = new Player("kim_bauer@gmail.com", passwordEncoder().encode("kb"));
-			Player player4 = new Player("t.almeida@ctu.gov",passwordEncoder().encode("mole"));
+			Player player1 = playerRepository.save(new Player("j.bauer@ctu.gov.ar",passwordEncoder().encode("24")));
+			Player player2 = playerRepository.save(new Player("c.obrian@ctu.gov",passwordEncoder().encode("42")));
+			Player player3 = playerRepository.save(new Player("kim_bauer@gmail.com", passwordEncoder().encode("kb")));
+			Player player4 = playerRepository.save(new Player("t.almeida@ctu.gov",passwordEncoder().encode("mole")));
 
 			// to save a couple of players
 			//playerRepository.save(new Player("Jack Bauer"));
@@ -61,23 +61,13 @@ public class SalvoApplication extends SpringBootServletInitializer {
 			//playerRepository.save(new Player("Kim Bauer"));
 			//playerRepository.save(new Player("Tony Almeida"));
 
-			playerRepository.save(player1);
-			playerRepository.save(player2);
-			playerRepository.save(player3);
-			playerRepository.save(player4);
-
-
 			Date date1 = new Date();
 			Date date2 = Date.from(date1.toInstant().plusSeconds(3600));
 			Date date3 = Date.from(date2.toInstant().plusSeconds(3000));
 
-			Game game1 = new Game(date1);
-			Game game2 = new Game(date2);
-			Game game3 = new Game(date3);
-
-			gameRepository.save(game1);
-			gameRepository.save(game2);
-			gameRepository.save(game3);
+			Game game1 = gameRepository.save(new Game(date1));
+			Game game2 = gameRepository.save(new Game(date2));
+			Game game3 = gameRepository.save(new Game(date3));
 
 			GamePlayer gp1 = new GamePlayer(date1,game1,player1);
 			GamePlayer gp2 = new GamePlayer(date1, game1,player2);

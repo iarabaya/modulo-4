@@ -20,7 +20,7 @@ public class Game {
   private Date creationDate;
 
   @OneToMany(mappedBy="game", fetch=FetchType.EAGER)
-  private List<GamePlayer> gamePlayers;
+  private Set<GamePlayer> gamePlayers = new HashSet<>();
 
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name="ship_id")
@@ -46,7 +46,7 @@ public class Game {
   }
 
   @JsonIgnore
-  public List<GamePlayer> getGamePlayers() {
+  public Set<GamePlayer> getGamePlayers() {
     return gamePlayers;
   }
 
@@ -65,8 +65,8 @@ public class Game {
   public Map<String, Object> makeGameDTO(){
       Map<String, Object> dto = new LinkedHashMap<String, Object>();
       dto.put("id", this.getId());
-      dto.put("creationDate", this.getCreationDate());
-      dto.put("gamePlayers", this.getGamePlayers());
+      dto.put("created", this.getCreationDate());
+      dto.put("gamePlayers", this.getGamePlayers().stream().map(GamePlayer::makeGamePlayerDTO).collect(Collectors.toList()));
       return dto;
   }
 }

@@ -24,7 +24,7 @@ public class Player {
   private String userName;
 
   @OneToMany(mappedBy = "player",fetch = FetchType.EAGER)
-  private List<GamePlayer> gamePlayers ;
+  private Set<GamePlayer> gamePlayers = new HashSet<>() ;
 
   @OneToMany(mappedBy = "player", fetch = FetchType.EAGER)
   private List<Score> scores;
@@ -53,7 +53,7 @@ public class Player {
   public String getPassword(){ return password;}
 
   @JsonIgnore
-  public List <GamePlayer> getGamePlayers() {
+  public Set<GamePlayer> getGamePlayers() {
     return gamePlayers;
   }
 
@@ -64,7 +64,7 @@ public class Player {
 
  @JsonIgnore
   public List<Game> getGames(){
-    return gamePlayers.stream()
+    return this.gamePlayers.stream()
             .map(sub -> sub.getGame())
             .collect(toList());
   }
@@ -72,26 +72,26 @@ public class Player {
   //DTOS
 
     public Map<String, Object> makePlayerDTO() {
-        Map<String, Object> dto = new LinkedHashMap<String, Object>();
+        Map<String, Object> dto = new LinkedHashMap<>();
         dto.put("id", this.getId());
         dto.put("name", this.getUserName());
         return dto;
-  }
+    }
 
-  public Map<String, Object> makeLeaderBoardDTO(){
-    Map<String,Object> dto = new LinkedHashMap<>();
+    public Map<String, Object> makeLeaderBoardDTO(){
+    Map<String,Object> dto = new LinkedHashMap<String, Object>();
     dto.put("email", userName);
     dto.put("wins", scores.stream().filter(score -> score.getScore() == 1).count());
     dto.put("loses",scores.stream().filter(score -> score.getScore() == 0).count());
     dto.put("ties",scores.stream().filter(score -> score.getScore() == 0.5).count());
     dto.put("total", getTotalScore());
-
     return dto;
-  }
+    }
 
   public double getTotalScore(){
     double total;
-    total = (scores.stream().filter(score ->score.getScore() == 1).count()) + ((scores.stream().filter(score ->score.getScore() == 0.5).count())/2.0);
+    total = (scores.stream().filter(score ->score.getScore() == 1).count()) 
+    + ((scores.stream().filter(score ->score.getScore() == 0.5).count())/2.0);
     return total;
 
   }
