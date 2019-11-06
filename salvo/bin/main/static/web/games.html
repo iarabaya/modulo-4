@@ -35,14 +35,12 @@
     <p>Game List</p>
     <button class="btn btn-warning mb-2" id="create-btn" name="create">Create Game</button>
     <button class="btn btn-warning mb-2" id="join-btn" name="join">Join Game</button>
-
-    //GAME LIST without VUE
-    <ul id="game-list">
+    <ul id="game-list1">
     </ul>
 
     <section>
         <div id="app" class="p-4">
-            <ul class="games-list1">
+            <ul class="games-list">
                 <li v-for="game in games" class="pt-2">
                     Game n° {{game.id}} created on {{game.created}}
                     <p>Players:</p>

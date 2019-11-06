@@ -54,7 +54,7 @@ public class Ship {
     } //Should return the player of the ship
 
     public Map<String, Object> makeShipDTO() {
-        Map<String, Object> dto = new LinkedHashMap<String, Object>();
+        Map<String, Object> dto = new LinkedHashMap<>();
         dto.put("type", this.getShipType());
         dto.put("locations", this.getLocations());
         return dto;}

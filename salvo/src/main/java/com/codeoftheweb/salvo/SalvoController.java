@@ -52,13 +52,13 @@ public class SalvoController {
 
   }
 
-  @RequestMapping(path="/", method = RequestMethod.POST)
+  /*@RequestMapping(path="/", method = RequestMethod.POST)
   public ResponseEntity<String> createGame(Player player){
 
-  }
+  }*/
 
   @RequestMapping("/games")
-  public Map<String,Object>> getGame(Authentication authentication){
+  public Map<String,Object> getGame(Authentication authentication){
     Map<String,Object> dto = new LinkedHashMap<>();
 
     if(isGuest(authentication)){
@@ -90,7 +90,7 @@ public class SalvoController {
 
   //DTO GAMEVIEW
 
-  public Map<String,Object> gameViewDTO(GamePlayer gamePlayer){
+  private Map<String,Object> gameViewDTO(GamePlayer gamePlayer){
     Map<String,Object> dto = new LinkedHashMap<>();
 
     dto.put("id", gamePlayer.getGame().getId());

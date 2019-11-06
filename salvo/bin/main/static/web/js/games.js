@@ -1,5 +1,5 @@
 //VUE CODE
-/*fetch("/api/games")
+fetch("/api/games")
 .then(res => res.json())
 .then(json => {
     app.games = json
@@ -19,7 +19,7 @@ function changeDateFormat (){
         var newDate = new Date(app.games[i].created).toLocaleString();
         app.games[i].created = newDate
     }
-}*/
+}
 
 //JQuery VERSION
 $(function() {
@@ -58,12 +58,12 @@ function loadData() {
 
 function updateView(data) { //for the JSON list of current games and their players
     let htmlList = data.games.map(function(games) {
-        return '<li>' + new Date(games.created).toLocaleString() + ' ' +
+        return '<li>' + new Date(games.creationDate).toLocaleString() + ' ' +
             games.gamePlayers.map(function(gp) {
-                return gp.player.name
+                return gp.player.userName
             }).join(' , ') + '</li>';
     }).join('');
-    document.getElementById("game-list").innerHTML = htmlList;
+    document.getElementById("game-list1").innerHTML = htmlList;
 }
 
 function createGame() {
