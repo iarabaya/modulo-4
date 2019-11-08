@@ -1,31 +1,11 @@
-//VUE CODE
-/*fetch("/api/games")
-.then(res => res.json())
-.then(json => {
-    app.games = json
-
-    console.log(app.games);
-})
-
-var app = new Vue({
-    el: "#app",
-    data: {
-        games: []
-    }
-});
-
-function changeDateFormat (){
-    for (i in app.games){
-        var newDate = new Date(app.games[i].created).toLocaleString();
-        app.games[i].created = newDate
-    }
-}*/
 
 //JQuery VERSION
 $(function() {
-    loadData()
+    loadGames()
+    loadLeaderBoard()
 });
 
+//LOGIN
 $(document).ready(function() {
     $('#login-btn').on('click', function() {
 
@@ -34,7 +14,7 @@ $(document).ready(function() {
 
         $.post("/api/login", { username: user, password: pwd })
             .done(function() {
-                var msg = '<h2>Logged in!</h2>';
+                var msg = '<h1>Logged in successfully!</h1>';
                 $('#log').html(msg);
 
             }).fail(function() {
@@ -44,26 +24,48 @@ $(document).ready(function() {
     });
 });
 
-// load and display JSON sent by server for /players
-
-function loadData() {
+// load and display JSON of Game List and Leaderboard
+function loadGames() {
     $.get("/api/games")
-        .done(function(data) {
-            updateView(data);
+        .done(function(data){
+            updateGamesView(data);
         })
         .fail(function(jqXHR, textStatus) {
             alert("Failed: " + textStatus);
         });
 }
 
-function updateView(data) { //for the JSON list of current games and their players
+function loadLeaderBoard(){
+    $.get("/api/leaderboard")
+    .done(function(data){
+        updateLeaderboard(data);
+    })
+    .fail(function(jqXHR, textStatus){
+        alert("Failed: " + textStatus);
+    });
+}
+
+function updateGamesView(data) { //for the JSON Table of current games and their players
     let htmlList = data.games.map(function(games) {
-        return '<li>' + new Date(games.created).toLocaleString() + ' ' +
-            games.gamePlayers.map(function(gp) {
+        return '<tr><th scope="row">'+ games.id +'</th><td>' + new Date(games.created).toLocaleString()
+        +'</td><td>' + games.gamePlayers.map(function(gp) {
                 return gp.player.name
-            }).join(' , ') + '</li>';
+            }).join('  VS  ') + '</td></tr>';
     }).join('');
     document.getElementById("game-list").innerHTML = htmlList;
+}
+
+function updateLeaderboard(data){ //for the JSON Leaderboard Table
+    var users = data.sort((a,b) => b.total - a.total);
+
+    let htmlList = users.map(function(data){
+        return '<tr><th scope="row">'
+        + data.user +'</th><td>'
+        + data.wins +'</td><td>'
+        + data.loses +'</td><td>'
+        + data.ties +'</td><td>'
+        + data.total + '</td></tr>' }).join('');
+    document.getElementById("leaderboard").innerHTML = htmlList;
 }
 
 function createGame() {
@@ -77,19 +79,3 @@ function createGame() {
             alert('Failed: ' + textStatus)
         });
 }
-
-/*function joinGame(){ //add a new game player entry
-    $.post("/api/games/{}/players")
-        .done(function(){
-            if(){ //logged in condition
-
-            }
-
-            if(){ //the user is a player in that game
-
-            }
-        })
-        .fail(function(jqXHR, textStatus){
-            alert('Failed: '+textStatus)
-        });
-}*/

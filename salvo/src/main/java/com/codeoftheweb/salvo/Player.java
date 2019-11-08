@@ -80,7 +80,7 @@ public class Player {
 
     public Map<String, Object> makeLeaderBoardDTO(){
     Map<String,Object> dto = new LinkedHashMap<String, Object>();
-    dto.put("email", userName);
+    dto.put("user", userName);
     dto.put("wins", scores.stream().filter(score -> score.getScore() == 1).count());
     dto.put("loses",scores.stream().filter(score -> score.getScore() == 0).count());
     dto.put("ties",scores.stream().filter(score -> score.getScore() == 0.5).count());

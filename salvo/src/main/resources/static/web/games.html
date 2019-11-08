@@ -18,8 +18,8 @@
     <div>
 
         <div>
-            <label>Email: <input type="text" class="form-control mb-2 mr-sm-2" id="username" name="username" ></label>
-            <label>Password: <input type="password" class="form-control" id="password" name="password"></label>
+            <label>Email: <input type="text" class="form-control mb-2 mr-sm-2" id="username" ></label>
+            <label>Password: <input type="password" class="form-control" id="password"></label>
         </div>
 
         <div>
@@ -32,28 +32,37 @@
 
 
 
-    <p>Game List</p>
-    <button class="btn btn-warning mb-2" id="create-btn" name="create">Create Game</button>
-    <button class="btn btn-warning mb-2" id="join-btn" name="join">Join Game</button>
 
-    //GAME LIST without VUE
-    <ul id="game-list">
-    </ul>
+    <button class="btn btn-warning mb-2" id="create-btn" name="create" disabled>Create Game</button>
+    <button class="btn btn-warning mb-2" id="join-btn" name="join" disabled>Join Game</button>
 
-    <section>
-        <div id="app" class="p-4">
-            <ul class="games-list1">
-                <li v-for="game in games" class="pt-2">
-                    Game n° {{game.id}} created on {{game.created}}
-                    <p>Players:</p>
-                    <ul>
-                        <li v-for="i in game.gamePlayers">{{i.player.name}}</li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    </section>
+    <h2>Game List</h2>
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Game</th>
+            <th scope="col">Date</th>
+            <th scope="col">Players</th>
+          </tr>
+        </thead>
+        <tbody id="game-list">
+        </tbody>
+    </table>
 
+    <h2>Leaderboard</h2>
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col">User</th>
+        <th scope="col">Won</th>
+        <th scope="col">Losses</th>
+        <th scope="col">Ties</th>
+        <th scope="col">Score</th>
+      </tr>
+      </thead>
+      <tbody id="leaderboard">
+      </tbody>
+    </table>
 
 
     <script src="../web/js/jquery-3.3.1.min.js"></script>

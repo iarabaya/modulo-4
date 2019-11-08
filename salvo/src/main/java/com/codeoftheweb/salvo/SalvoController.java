@@ -52,10 +52,6 @@ public class SalvoController {
 
   }
 
-  /*@RequestMapping(path="/", method = RequestMethod.POST)
-  public ResponseEntity<String> createGame(Player player){
-
-  }*/
 
   @RequestMapping("/games")
   public Map<String,Object> getGame(Authentication authentication){
@@ -67,7 +63,6 @@ public class SalvoController {
       Player player = playerRepository.findByUserName(authentication.getName());
       dto.put("player", player.makePlayerDTO());
     }
-
     dto.put("games", gameRepository.findAll().stream().map(Game::makeGameDTO).collect(Collectors.toList()));
     return dto;
   }

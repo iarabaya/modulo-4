@@ -12,10 +12,11 @@ function loadData() {
         .done(function(data) {
             console.log(data);
             var playerInfo;
-            if (data.gamePlayers[0].id == getParameterByName('gp'))
+            if (data.gamePlayers[0].gpid == getParameterByName('gp')){
                 playerInfo = [data.gamePlayers[0].player.name, data.gamePlayers[1].player.name];
-            else
+            }else{
                 playerInfo = [data.gamePlayers[1].player.name, data.gamePlayers[0].player.name];
+            }
 
             console.log(playerInfo);
             $('#playerInfo').text(playerInfo[0] + '(you) vs ' + playerInfo[1]);
@@ -32,7 +33,7 @@ function loadData() {
                 if (salvo.player == playerInfo[0]) {
                     salvo.locations.forEach(function(salvoLocation) {
                         console.log(salvoLocation);
-                        $('#game-board #' + salvoLocation).addClass('salvo').text(salvo.turn)
+                        $('#' + salvoLocation).addClass('salvo').text(salvo.turn)
                     })
                 }
             });
@@ -41,7 +42,7 @@ function loadData() {
             shipHited.forEach(function(salvo) {
                 if (salvo.player == playerInfo[1]) {
                     salvo.locations.forEach(function(salvoLocation) {
-                        $('#enemy-board #T2_' + salvoLocation).addClass('ship-piece-hited').text(salvo.turn)
+                        $('#T2_' + salvoLocation).addClass('ship-piece-hited').text(salvo.turn)
                     })
                 }
             });
