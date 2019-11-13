@@ -14,9 +14,7 @@ $(document).ready(function() {
 
         $.post("/api/login", { username: user, password: pwd })
             .done(function() {
-                var msg = '<h1>Logged in successfully!</h1>';
-                $('#log').html(msg);
-
+                alert('Logged in successfully!');
             }).fail(function() {
                 alert('Failed at log');
             });

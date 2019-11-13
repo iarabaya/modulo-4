@@ -142,6 +142,9 @@ public class SalvoApplication extends SpringBootServletInitializer {
 		@Autowired
 		PlayerRepository playerRepository;
 
+		@Autowired
+		PasswordEncoder passwordEncoder;
+
 		@Override
 		public void init(AuthenticationManagerBuilder authentication) throws Exception {
 			authentication.userDetailsService(inputName-> {
@@ -163,11 +166,14 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 			.antMatchers("/api/login").permitAll()
-			.antMatchers("/web/games.html","/web/**","/web/css/*", "/api/games","/api/leaderboard").permitAll()
-			.antMatchers("/web/game.html*","/api/**").hasAuthority("USER")
+			.antMatchers("/web/games.html", "/web/js/*", "/web/css/*", "/api/games","/api/leaderboard").permitAll()
+			.antMatchers("/web/game.html*","/api/*").hasAuthority("USER")
 			.anyRequest().denyAll();
 
-		http.formLogin().usernameParameter("username").passwordParameter("password").loginPage("/api/login");
+		http.formLogin()
+			.usernameParameter("username")
+			.passwordParameter("password")
+			.loginPage("/api/login");
 		http.logout().logoutUrl("/api/logout");
 
 		// turn off checking for CSRF tokens
