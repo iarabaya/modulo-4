@@ -1,14 +1,13 @@
-
 //JQuery VERSION
 $(function() {
     loadGames()
     loadLeaderBoard()
 });
 
-//LOGIN
+//LOG IN - SING UP - LOG OUT
 $(document).ready(function() {
-    $('#login-btn').on('click', function() {
 
+    $('#login-btn').on('click', function() {
         var user = $('#username').val();
         var pwd = $('#password').val();
 
@@ -20,7 +19,35 @@ $(document).ready(function() {
             });
 
     });
+
+    $('#signup-btn').on('click', function(){
+        var user = $('#username').val();
+        var pwd = $('#password').val();
+
+        $.post("/api/players", { username: user, password: pwd })
+        .done(function(){
+            alert('Account created')
+        }).fail(function(){
+            alert('Failed at sign up')
+        });
+    });
+
+    $('#logout-btn').on('click', function(){
+        $.post("/api/logout")
+        .done(function(){
+        alert('Logged out successfully!')
+        }).fail(function(){
+        alert('Failed at log out')
+        });
+    });
+
 });
+
+/*
+function userData(){
+    var user = { "name":$('#username').val(), "pwd":$('#password').val()}
+    return user;
+}*/
 
 // load and display JSON of Game List and Leaderboard
 function loadGames() {

@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.management.ObjectName;
@@ -32,25 +33,32 @@ public class SalvoController {
   private SalvoRepository salvoRepository;
   @Autowired
   private ScoreRepository scoreRepository;
+  @Autowired
+  private PasswordEncoder passwordEncoder;
 
 
   @RequestMapping(path = "/players", method = RequestMethod.POST)
-  public ResponseEntity<String> createPlayer(@RequestParam String name,@RequestParam String password) {
+  public ResponseEntity<Map<String, Object>> createPlayer(@RequestParam String username,@RequestParam String password) {
 
-    if(name.isEmpty()){
-      return new ResponseEntity<String>("No name given",HttpStatus.FORBIDDEN);
+    if(username.isEmpty() || password.isEmpty()){
+      return new ResponseEntity<>(makeMap("error", "Missing data" ),HttpStatus.FORBIDDEN);
     }
 
-    Player player = playerRepository.findByUserName(name);
+    Player player = playerRepository.findByUserName(username);
 
-    if(name != null){ //todo esta bien
-      playerRepository.save(new Player(name, password));
-      return new ResponseEntity<String>("Player created", HttpStatus.CREATED);
+    if(player == null){ //todo esta bien
+      player = new Player(username, passwordEncoder.encode(password));
+      playerRepository.save(player);
+      return new ResponseEntity<>(makeMap("id",player.getId()), HttpStatus.CREATED);
     }else{
-      return new ResponseEntity<String>("The user already exists",HttpStatus.CONFLICT);
+      return new ResponseEntity<>(makeMap("error", "The user already exists"),HttpStatus.CONFLICT);
     }
-
   }
+
+  private Map<String, Object> makeMap(String key, Object value) {
+    Map<String, Object> map = new HashMap<>();
+    map.put(key, value);
+    return map;}
 
 
   @RequestMapping("/games")
